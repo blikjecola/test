@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Photography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #f7f5f1;
+    --ink:   #1c1b19;
+    --mute:  #8a8578;
+    --line:  #ddd8cc;
+    --accent:#2b3a55;
+
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Work Sans', sans-serif;
+    --font-mono:'Space Mono', monospace;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--font-body); font-weight:300;
+  }
+  a{ color:inherit; text-decoration:none; }
+  img{ display:block; width:100%; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  .wrap{ max-width:1200px; margin:0 auto; padding:0 28px; }
+
+  /* header */
+  header{ padding:28px 0 8px; }
+  .header-row{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+  .logo{ font-family:var(--font-display); font-weight:700; font-size:19px; letter-spacing:-.01em; }
+  nav ul{ list-style:none; display:flex; gap:28px; font-size:14px; }
+  nav a{ position:relative; padding-bottom:3px; color:var(--mute); transition:color .2s; }
+  nav a:hover{ color:var(--ink); }
+
+  /* hero */
+  .hero{ padding:64px 0 44px; border-bottom:1px solid var(--line); }
+  .hero h1{
+    font-family:var(--font-display); font-weight:600;
+    font-size:clamp(1.9rem,4.5vw,3rem); line-height:1.15; max-width:720px;
+  }
+  .hero p{ margin-top:16px; max-width:520px; color:var(--mute); font-size:15.5px; line-height:1.6; }
+
+  /* filters */
+  .filters{ padding:28px 0 8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .filters span{ font-family:var(--font-mono); font-size:11px; color:var(--mute); margin-right:6px; }
+  .filter-btn{
+    font-family:var(--font-body); font-size:13.5px; padding:7px 15px;
+    border:1px solid var(--line); border-radius:100px; background:transparent; color:var(--mute);
+    cursor:pointer; transition:all .2s ease;
+  }
+  .filter-btn:hover{ border-color:var(--ink); color:var(--ink); }
+  .filter-btn.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+  /* gallery */
+  .gallery{ padding:32px 0 90px; column-count:3; column-gap:16px; }
+  .item{
+    break-inside:avoid; margin-bottom:16px; position:relative; overflow:hidden;
+    cursor:pointer; background:var(--line);
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .item.is-hidden{ opacity:0; transform:scale(.97); pointer-events:none; position:absolute; visibility:hidden; }
+  .item img{ transition:transform .5s ease, filter .5s ease; filter:grayscale(.1); }
+  .item:hover img{ transform:scale(1.04); filter:grayscale(0); }
+  .item-tag{
+    position:absolute; top:10px; left:10px; z-index:2;
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.04em; text-transform:uppercase;
+    background:rgba(28,27,25,.72); color:var(--paper); padding:4px 9px; border-radius:100px;
+  }
+  .item-cap{
+    position:absolute; left:0; right:0; bottom:0; z-index:2;
+    padding:14px 14px 12px; font-size:13px; color:var(--paper);
+    background:linear-gradient(to top, rgba(28,27,25,.85), transparent);
+    opacity:0; transform:translateY(6px); transition:opacity .25s ease, transform .25s ease;
+  }
+  .item:hover .item-cap{ opacity:1; transform:translateY(0); }
+
+  @media (max-width:900px){ .gallery{ column-count:2; } }
+  @media (max-width:560px){ .gallery{ column-count:1; } }
+
+  /* about */
+  .about{ padding:60px 0; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  .about h2{ font-family:var(--font-display); font-weight:600; font-size:1.4rem; margin-bottom:14px; }
+  .about p{ color:var(--mute); font-size:15px; line-height:1.7; max-width:480px; }
+  @media (max-width:720px){ .about{ grid-template-columns:1fr; } }
+
+  /* footer */
+  footer{ border-top:1px solid var(--line); padding:34px 0; }
+  .footer-row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; font-size:13.5px; color:var(--mute); }
+  .footer-row a:hover{ color:var(--ink); }
+  .socials{ display:flex; gap:20px; }
+
+  /* lightbox */
+  .lightbox{ position:fixed; inset:0; background:rgba(20,19,17,.96); z-index:1000; display:none; align-items:center; justify-content:center; padding:5vh 4vw; }
+  .lightbox.open{ display:flex; }
+  .lightbox img{ max-width:100%; max-height:80vh; width:auto; object-fit:contain; }
+  .lb-frame{ display:flex; flex-direction:column; gap:12px; align-items:center; }
+  .lb-cap{ font-family:var(--font-mono); font-size:12px; color:#c9c4b8; }
+  .lb-btn{ position:fixed; top:0; bottom:0; display:flex; align-items:center; font-size:26px; color:var(--paper); background:none; border:none; cursor:pointer; padding:0 22px; }
+  .lb-prev{ left:0; } .lb-next{ right:0; }
+  .lb-close{ position:fixed; top:20px; right:24px; font-family:var(--font-mono); font-size:12.5px; background:none; border:1px solid #56514a; color:var(--paper); padding:7px 13px; cursor:pointer; border-radius:100px; }
+  .lb-close:hover{ border-color:var(--paper); }
+
+  @media (prefers-reduced-motion:reduce){
+    .item, .item img, .item-cap{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="header-row">
+    <div class="logo">[Your Name]</div>
+    <nav>
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero wrap">
+  <h1>Photography — portraits, street, and travel work.</h1>
+  <p>A collection of recent photos, sorted by category. Click any image to view it larger.</p>
+</section>
+
+<section id="work" class="wrap">
+  <div class="filters" id="filters">
+    <span>FILTER</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="portraits">Portraits</button>
+    <button class="filter-btn" data-filter="street">Street</button>
+    <button class="filter-btn" data-filter="travel">Travel</button>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <!-- Each .item is one photo. Set data-cat to "portraits", "street", or "travel" (add more categories + filter buttons above as needed). Swap img src/data-full with your own files, and edit the caption. -->
+    <div class="item" data-cat="portraits" tabindex="0" data-full="https://picsum.photos/seed/p1/1400/1750" data-cap="Portrait — window light, afternoon">
+      <img loading="lazy" src="https://picsum.photos/seed/p1/700/875" alt="Portrait in window light">
+      <span class="item-tag">Portraits</span>
+      <span class="item-cap">Window light, afternoon</span>
+    </div>
+    <div class="item" data-cat="street" tabindex="0" data-full="https://picsum.photos/seed/s1/1400/933" data-cap="Street — market corner, morning">
+      <img loading="lazy" src="https://picsum.photos/seed/s1/700/467" alt="Street scene at a market corner">
+      <span class="item-tag">Street</span>
+      <span class="item-cap">Market corner, morning</span>
+    </div>
+    <div class="item" data-cat="travel" tabindex="0" data-full="https://picsum.photos/seed/t1/1400/1867" data-cap="Travel — coastal town, late light">
+      <img loading="lazy" src="https://picsum.photos/seed/t1/700/933" alt="Coastal town in late afternoon light">
+      <span class="item-tag">Travel</span>
+      <span class="item-cap">Coastal town, late light</span>
+    </div>
+    <div class="item" data-cat="street" tabindex="0" data-full="https://picsum.photos/seed/s2/1400/1050" data-cap="Street — transit platform, rush hour">
+      <img loading="lazy" src="https://picsum.photos/seed/s2/700/525" alt="Busy transit platform during rush hour">
+      <span class="item-tag">Street</span>
+      <span class="item-cap">Transit platform, rush hour</span>
+    </div>
+    <div class="item" data-cat="portraits" tabindex="0" data-full="https://picsum.photos/seed/p2/1400/1750" data-cap="Portrait — studio, natural light">
+      <img loading="lazy" src="https://picsum.photos/seed/p2/700/875" alt="Studio portrait in natural light">
+      <span class="item-tag">Portraits</span>
+      <span class="item-cap">Studio, natural light</span>
+    </div>
+    <div class="item" data-cat="travel" tabindex="0" data-full="https://picsum.photos/seed/t2/1400/933" data-cap="Travel — mountain road, early morning">
+      <img loading="lazy" src="https://picsum.photos/seed/t2/700/467" alt="Mountain road in early morning">
+      <span class="item-tag">Travel</span>
+      <span class="item-cap">Mountain road, early morning</span>
+    </div>
+    <div class="item" data-cat="street" tabindex="0" data-full="https://picsum.photos/seed/s3/1400/1750" data-cap="Street — alleyway, midday shadow">
+      <img loading="lazy" src="https://picsum.photos/seed/s3/700/875" alt="Alleyway with strong midday shadow">
+      <span class="item-tag">Street</span>
+      <span class="item-cap">Alleyway, midday shadow</span>
+    </div>
+    <div class="item" data-cat="portraits" tabindex="0" data-full="https://picsum.photos/seed/p3/1400/1050" data-cap="Portrait — outdoors, golden hour">
+      <img loading="lazy" src="https://picsum.photos/seed/p3/700/525" alt="Outdoor portrait during golden hour">
+      <span class="item-tag">Portraits</span>
+      <span class="item-cap">Outdoors, golden hour</span>
+    </div>
+    <div class="item" data-cat="travel" tabindex="0" data-full="https://picsum.photos/seed/t3/1400/1750" data-cap="Travel — old town streets">
+      <img loading="lazy" src="https://picsum.photos/seed/t3/700/875" alt="Narrow streets of an old town">
+      <span class="item-tag">Travel</span>
+      <span class="item-cap">Old town streets</span>
+    </div>
+    <div class="item" data-cat="street" tabindex="0" data-full="https://picsum.photos/seed/s4/1400/933" data-cap="Street — corner store, dusk">
+      <img loading="lazy" src="https://picsum.photos/seed/s4/700/467" alt="Corner store lit at dusk">
+      <span class="item-tag">Street</span>
+      <span class="item-cap">Corner store, dusk</span>
+    </div>
+    <div class="item" data-cat="travel" tabindex="0" data-full="https://picsum.photos/seed/t4/1400/1050" data-cap="Travel — harbor, blue hour">
+      <img loading="lazy" src="https://picsum.photos/seed/t4/700/525" alt="Harbor scene at blue hour">
+      <span class="item-tag">Travel</span>
+      <span class="item-cap">Harbor, blue hour</span>
+    </div>
+    <div class="item" data-cat="portraits" tabindex="0" data-full="https://picsum.photos/seed/p4/1400/1867" data-cap="Portrait — candid, indoors">
+      <img loading="lazy" src="https://picsum.photos/seed/p4/700/933" alt="Candid indoor portrait">
+      <span class="item-tag">Portraits</span>
+      <span class="item-cap">Candid, indoors</span>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="wrap about">
+  <div>
+    <h2>About</h2>
+    <p>I'm a photographer working across portraits, street, and travel — mostly shot on location, in natural light. This site collects a running selection of that work, sorted by category above.</p>
+  </div>
+  <div>
+    <h2>Info</h2>
+    <p>
+      Based in [Your city]<br>
+      Available for editorial, portrait sessions, and travel commissions<br>
+      Prints available on request
+    </p>
+  </div>
+</section>
+
+<footer id="contact" class="wrap">
+  <div class="footer-row">
+    <a href="mailto:you@example.com">you@example.com</a>
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">Behance</a>
+    </div>
+    <span>© 2026 [Your Name]</span>
+  </div>
+</footer>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous photo">&#8592;</button>
+  <div class="lb-frame">
+    <img id="lbImg" src="" alt="">
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next photo">&#8594;</button>
+  <button class="lb-close" id="lbClose">Close ✕</button>
+</div>
+
+<script>
+  // ---- filtering ----
+  const buttons = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.item');
+
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      buttons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      items.forEach(item=>{
+        const show = (f === 'all' || item.dataset.cat === f);
+        item.classList.toggle('is-hidden', !show);
+      });
+    });
+  });
+
+  // ---- reveal on scroll ----
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.style.opacity = 1; io.unobserve(e.target); }
+    });
+  }, { threshold:.1 });
+  items.forEach(i=>{ i.style.opacity = 0; i.style.transition = 'opacity .5s ease'; io.observe(i); });
+
+  // ---- lightbox ----
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCap = document.getElementById('lbCap');
+  const itemList = Array.from(items);
+  let currentIndex = 0;
+
+  function visibleList(){ return itemList.filter(i=>!i.classList.contains('is-hidden')); }
+
+  function openLightbox(item){
+    const list = visibleList();
+    currentIndex = list.indexOf(item);
+    showCurrent(list);
+    lightbox.classList.add('open');
+  }
+  function showCurrent(list){
+    const f = list[currentIndex];
+    lbImg.src = f.dataset.full;
+    lbImg.alt = f.querySelector('img').alt;
+    lbCap.textContent = f.dataset.cap;
+  }
+  function closeLightbox(){ lightbox.classList.remove('open'); }
+  function step(dir){
+    const list = visibleList();
+    currentIndex = (currentIndex + dir + list.length) % list.length;
+    showCurrent(list);
+  }
+
+  itemList.forEach(item=>{
+    item.addEventListener('click', ()=>openLightbox(item));
+    item.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openLightbox(item);} });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', ()=>step(-1));
+  document.getElementById('lbNext').addEventListener('click', ()=>step(1));
+  lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e)=>{
+    if(!lightbox.classList.contains('open')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') step(-1);
+    if(e.key === 'ArrowRight') step(1);
+  });
+</script>
+
+</body>
+</html>
