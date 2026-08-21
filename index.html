@@ -31,6 +31,9 @@
 
   .wrap{ max-width:1200px; margin:0 auto; padding:0 24px; }
 
+  /* work/gallery section allowed to run wider (up to 2000px) than the rest of the site */
+  #work{ max-width:2000px; }
+
   /* header */
   header{ padding:28px 0 8px; }
   .header-row{ display:flex; align-items:center; justify-content:space-between; flex-wrap:nowrap; gap:16px; }
@@ -90,9 +93,9 @@
   }
 
   /* gallery — flexbox auto-sizes items per row for any viewport, no manual column breakpoints needed */
-  .gallery{ padding:32px 0 90px; display:flex; flex-wrap:wrap; gap:16px; }
+  .gallery{ max-width:2000px; margin:0 auto; padding:32px 0 90px; display:flex; flex-wrap:wrap; gap:16px; }
   .item{
-    flex:1 1 280px; aspect-ratio:4 / 5; position:relative; overflow:hidden;
+    flex:1 1 280px; max-width:2000px; aspect-ratio:4 / 5; position:relative; overflow:hidden;
     cursor:pointer; background:var(--line);
     transition:opacity .35s ease, transform .35s ease;
   }
@@ -139,7 +142,7 @@
   /* lightbox */
   .lightbox{ position:fixed; inset:0; background:rgba(20,19,17,.96); z-index:1000; display:none; align-items:center; justify-content:center; padding:5vh 4vw; touch-action:pan-y; }
   .lightbox.open{ display:flex; }
-  .lightbox img{ max-width:100%; max-height:80vh; width:auto; object-fit:contain; }
+  .lightbox img{ max-width:min(100%, 2000px); max-height:80vh; width:auto; object-fit:contain; }
   .lb-frame{ display:flex; flex-direction:column; gap:12px; align-items:center; }
   .lb-cap{ font-family:var(--font-mono); font-size:12px; color:#c9c4b8; text-align:center; padding:0 12px; }
   .lb-btn{
