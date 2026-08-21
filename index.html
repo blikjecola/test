@@ -39,7 +39,8 @@
   nav a:hover{ color:var(--ink); }
 
   /* hero */
-  .hero{ padding:64px 0 44px; border-bottom:1px solid var(--line); text-align:center; display:flex; flex-direction:column; align-items:center; }
+  .hero{ padding:64px 0 44px; border-bottom:1px solid var(--line); text-align:center; }
+  .hero .wrap{ display:flex; flex-direction:column; align-items:center; }
   .hero h1{
     font-family:var(--font-display); font-weight:600;
     font-size:clamp(1.9rem,4.5vw,3rem); line-height:1.15; max-width:760px;
@@ -173,9 +174,11 @@
   </div>
 </header>
 
-<section class="hero wrap">
-  <h1>Photography — street, and travel work.</h1>
-  <p>A collection of all photos to this day, sorted by category. Click any image to view it larger.</p>
+<section class="hero">
+  <div class="wrap">
+    <h1>Photography — street, and travel work.</h1>
+    <p>A collection of all photos to this day, sorted by category. Click any image to view it larger.</p>
+  </div>
 </section>
 
 <section id="work" class="wrap">
@@ -270,8 +273,8 @@
   </div>
 </section>
 
-<footer id="contact" class="wrap">
-  <div class="footer-row">
+<footer id="contact">
+  <div class="wrap footer-row">
     <a href="mailto:hobbyphotobortier@gmail.com">hobbyphotobortier@gmail.com</a>
     <div class="socials">
       <a href="https://www.instagram.com/bortiergilles/">Instagram</a>
