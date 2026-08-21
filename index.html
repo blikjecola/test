@@ -28,12 +28,12 @@
   img{ display:block; width:100%; }
   :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 
-  .wrap{ max-width:1200px; margin:0 auto; padding:0 28px; }
+  .wrap{ max-width:1200px; margin:0 auto; padding:0 24px; }
 
   /* header */
   header{ padding:28px 0 8px; }
   .header-row{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
-  .logo{ font-family:var(--font-display); font-weight:700; font-size:19px; letter-spacing:-.01em; margin-left:-2px; }
+  .logo{ font-family:var(--font-display); font-weight:700; font-size:19px; letter-spacing:-.01em; }
   nav ul{ list-style:none; display:flex; gap:28px; font-size:14px; }
   nav a{ position:relative; padding-bottom:3px; color:var(--mute); transition:color .2s; display:inline-block; }
   nav a:hover{ color:var(--ink); }
@@ -43,13 +43,11 @@
   .hero h1{
     font-family:var(--font-display); font-weight:600;
     font-size:clamp(1.9rem,4.5vw,3rem); line-height:1.15; max-width:720px;
-    margin-left:-2px;
   }
   .hero p{ margin-top:16px; max-width:520px; color:var(--mute); font-size:15.5px; line-height:1.6; }
 
   /* --- small screens: header/hero --- */
   @media (max-width:640px){
-    .wrap{ padding:0 24px; }
     header{ padding:22px 0 6px; }
     .header-row{ gap:10px 18px; }
     nav ul{ gap:18px; font-size:13.5px; }
