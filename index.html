@@ -39,12 +39,13 @@
   nav a:hover{ color:var(--ink); }
 
   /* hero */
-  .hero{ padding:64px 0 44px; border-bottom:1px solid var(--line); }
+  .hero{ padding:64px 0 44px; border-bottom:1px solid var(--line); text-align:center; display:flex; flex-direction:column; align-items:center; }
   .hero h1{
     font-family:var(--font-display); font-weight:600;
-    font-size:clamp(1.9rem,4.5vw,3rem); line-height:1.15; max-width:720px;
+    font-size:clamp(1.9rem,4.5vw,3rem); line-height:1.15; max-width:760px;
+    margin:0 auto;
   }
-  .hero p{ margin-top:16px; max-width:520px; color:var(--mute); font-size:15.5px; line-height:1.6; }
+  .hero p{ margin:16px auto 0; max-width:540px; color:var(--mute); font-size:15.5px; line-height:1.6; }
 
   /* --- small screens: header/hero --- */
   @media (max-width:640px){
@@ -114,10 +115,10 @@
   }
 
   /* about */
-  .about{ padding:60px 0; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  #about{ border-top:1px solid var(--line); }
+  .about{ padding:60px 0; display:flex; flex-direction:column; gap:36px; max-width:480px; margin:0 auto; }
   .about h2{ font-family:var(--font-display); font-weight:600; font-size:1.4rem; margin-bottom:14px; }
   .about p{ color:var(--mute); font-size:15px; line-height:1.7; max-width:480px; }
-  @media (max-width:720px){ .about{ grid-template-columns:1fr; } }
 
   /* footer */
   footer{ border-top:1px solid var(--line); padding:34px 0; }
@@ -165,7 +166,8 @@
       <ul>
         <li><a href="#work">Work</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="mailto:hobbyphotobortier@gmail.com">Email</a></li>
+        <li><a href="https://www.instagram.com/bortiergilles/">Instagram</a></li>
       </ul>
     </nav>
   </div>
@@ -251,18 +253,20 @@
   </div>
 </section>
 
-<section id="about" class="wrap about">
-  <div>
-    <h2>About</h2>
-    <p>I'm a photographer working across street, and travel — mostly shot on location, in natural light. This site collects a running selection of that work, some shots may be good, some shots may be bad, sorted by category above.</p>
-  </div>
-  <div>
-    <h2>Info</h2>
-    <p>
-        Based in Watou<br>
-      Not yet available for editorial, portrait sessions, and travel commissions :)<br>
-      Prints available on request
-    </p>
+<section id="about">
+  <div class="wrap about">
+    <div>
+      <h2>About</h2>
+      <p>I'm a photographer working across street, and travel — mostly shot on location, in natural light. This site collects a running selection of that work, some shots may be good, some shots may be bad, sorted by category above.</p>
+    </div>
+    <div>
+      <h2>Info</h2>
+      <p>
+          Based in Watou<br>
+        Not yet available for editorial, portrait sessions, and travel commissions :)<br>
+        Prints available on request
+      </p>
+    </div>
   </div>
 </section>
 
