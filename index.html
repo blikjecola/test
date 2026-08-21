@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#D9C38C">
 <title>Portfolio — Photography</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
@@ -34,7 +35,7 @@
   .header-row{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
   .logo{ font-family:var(--font-display); font-weight:700; font-size:19px; letter-spacing:-.01em; }
   nav ul{ list-style:none; display:flex; gap:28px; font-size:14px; }
-  nav a{ position:relative; padding-bottom:3px; color:var(--mute); transition:color .2s; }
+  nav a{ position:relative; padding-bottom:3px; color:var(--mute); transition:color .2s; display:inline-block; }
   nav a:hover{ color:var(--ink); }
 
   /* hero */
@@ -45,16 +46,38 @@
   }
   .hero p{ margin-top:16px; max-width:520px; color:var(--mute); font-size:15.5px; line-height:1.6; }
 
+  /* --- small screens: header/hero --- */
+  @media (max-width:640px){
+    .wrap{ padding:0 18px; }
+    header{ padding:20px 0 6px; }
+    .header-row{ gap:10px 18px; }
+    nav ul{ gap:18px; font-size:13.5px; }
+    nav a{ padding:6px 0; }
+    .hero{ padding:36px 0 28px; }
+    .hero p{ font-size:14.5px; }
+  }
+
   /* filters */
   .filters{ padding:28px 0 8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
   .filters span{ font-family:var(--font-mono); font-size:11px; color:var(--mute); margin-right:6px; }
   .filter-btn{
     font-family:var(--font-body); font-size:13.5px; padding:7px 15px;
     border:1px solid var(--line); border-radius:100px; background:transparent; color:var(--mute);
-    cursor:pointer; transition:all .2s ease;
+    cursor:pointer; transition:all .2s ease; min-height:36px;
   }
   .filter-btn:hover{ border-color:var(--ink); color:var(--ink); }
   .filter-btn.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+  /* --- small screens: filters scroll instead of wrap --- */
+  @media (max-width:640px){
+    .filters{
+      flex-wrap:nowrap; overflow-x:auto; padding:20px 0 10px;
+      -webkit-overflow-scrolling:touch; scrollbar-width:none;
+    }
+    .filters::-webkit-scrollbar{ display:none; }
+    .filters span{ flex:0 0 auto; }
+    .filter-btn{ flex:0 0 auto; white-space:nowrap; }
+  }
 
   /* gallery */
   .gallery{ padding:32px 0 90px; column-count:3; column-gap:16px; }
@@ -82,6 +105,15 @@
   @media (max-width:900px){ .gallery{ column-count:2; } }
   @media (max-width:560px){ .gallery{ column-count:1; } }
 
+  /* --- small screens: gallery --- */
+  @media (max-width:640px){
+    .gallery{ padding:20px 0 60px; column-gap:12px; }
+    .item{ margin-bottom:12px; }
+    /* hover states don't work reliably on touch — keep captions visible */
+    .item-cap{ opacity:1; transform:translateY(0); font-size:12.5px; padding:11px 12px 10px; }
+    .item-tag{ font-size:10px; padding:4px 8px; }
+  }
+
   /* about */
   .about{ padding:60px 0; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:48px; }
   .about h2{ font-family:var(--font-display); font-weight:600; font-size:1.4rem; margin-bottom:14px; }
@@ -95,15 +127,30 @@
   .socials{ display:flex; gap:20px; }
 
   /* lightbox */
-  .lightbox{ position:fixed; inset:0; background:rgba(20,19,17,.96); z-index:1000; display:none; align-items:center; justify-content:center; padding:5vh 4vw; }
+  .lightbox{ position:fixed; inset:0; background:rgba(20,19,17,.96); z-index:1000; display:none; align-items:center; justify-content:center; padding:5vh 4vw; touch-action:pan-y; }
   .lightbox.open{ display:flex; }
   .lightbox img{ max-width:100%; max-height:80vh; width:auto; object-fit:contain; }
   .lb-frame{ display:flex; flex-direction:column; gap:12px; align-items:center; }
-  .lb-cap{ font-family:var(--font-mono); font-size:12px; color:#c9c4b8; }
-  .lb-btn{ position:fixed; top:0; bottom:0; display:flex; align-items:center; font-size:26px; color:var(--paper); background:none; border:none; cursor:pointer; padding:0 22px; }
-  .lb-prev{ left:0; } .lb-next{ right:0; }
-  .lb-close{ position:fixed; top:20px; right:24px; font-family:var(--font-mono); font-size:12.5px; background:none; border:1px solid #56514a; color:var(--paper); padding:7px 13px; cursor:pointer; border-radius:100px; }
+  .lb-cap{ font-family:var(--font-mono); font-size:12px; color:#c9c4b8; text-align:center; padding:0 12px; }
+  .lb-btn{
+    position:fixed; top:50%; transform:translateY(-50%);
+    display:flex; align-items:center; justify-content:center;
+    width:48px; height:48px; border-radius:50%;
+    font-size:22px; color:var(--paper); background:rgba(0,0,0,.28); border:none; cursor:pointer;
+  }
+  .lb-prev{ left:12px; } .lb-next{ right:12px; }
+  .lb-close{ position:fixed; top:16px; right:16px; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:12.5px; background:none; border:1px solid #56514a; color:var(--paper); min-width:40px; min-height:40px; padding:7px 13px; cursor:pointer; border-radius:100px; }
   .lb-close:hover{ border-color:var(--paper); }
+
+  /* --- small screens: lightbox --- */
+  @media (max-width:640px){
+    .lightbox{ padding:4vh 3vw; }
+    .lightbox img{ max-height:68vh; }
+    .lb-btn{ width:42px; height:42px; font-size:19px; }
+    .lb-prev{ left:6px; } .lb-next{ right:6px; }
+    .lb-close{ top:10px; right:10px; font-size:0; min-width:38px; min-height:38px; padding:0; }
+    .lb-close::before{ content:'✕'; font-size:15px; }
+  }
 
   @media (prefers-reduced-motion:reduce){
     .item, .item img, .item-cap{ transition:none; }
@@ -309,6 +356,20 @@
     if(e.key === 'ArrowLeft') step(-1);
     if(e.key === 'ArrowRight') step(1);
   });
+
+  // ---- swipe to navigate (touch devices) ----
+  let touchStartX = 0, touchStartY = 0;
+  lightbox.addEventListener('touchstart', (e)=>{
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+  }, { passive:true });
+  lightbox.addEventListener('touchend', (e)=>{
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)){
+      step(dx < 0 ? 1 : -1);
+    }
+  }, { passive:true });
 </script>
 
 </body>
