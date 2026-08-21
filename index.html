@@ -31,8 +31,10 @@
 
   .wrap{ max-width:1200px; margin:0 auto; padding:0 24px; }
 
-  /* work/gallery section allowed to run wider (up to 2000px) than the rest of the site */
+  /* work section holds the wider gallery, but .filters is pinned back to the standard
+     1200px content width so the filter bar stays aligned with the header/hero/about content */
   #work{ max-width:2000px; }
+  .filters-wrap{ max-width:1200px; margin:0 auto; }
 
   /* header */
   header{ padding:28px 0 8px; }
@@ -195,13 +197,15 @@
 </section>
 
 <section id="work" class="wrap">
-  <div class="filters" id="filters">
-    <span>FILTER</span>
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="color">Color</button>
-    <button class="filter-btn" data-filter="b&amp;w">B&amp;W</button>
-    <button class="filter-btn" data-filter="street">Street</button>
-    <button class="filter-btn" data-filter="travel">Travel</button>
+  <div class="filters-wrap">
+    <div class="filters" id="filters">
+      <span>FILTER</span>
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="color">Color</button>
+      <button class="filter-btn" data-filter="b&amp;w">B&amp;W</button>
+      <button class="filter-btn" data-filter="street">Street</button>
+      <button class="filter-btn" data-filter="travel">Travel</button>
+    </div>
   </div>
 
   <div class="gallery" id="gallery">
