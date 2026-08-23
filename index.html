@@ -246,71 +246,12 @@
       <button class="filter-btn" data-filter="b&amp;w">B&amp;W</button>
       <button class="filter-btn" data-filter="street">Street</button>
       <button class="filter-btn" data-filter="travel">Travel</button>
+      <button class="filter-btn" data-filter="portraits">Portraits</button>
     </div>
   </div>
 
   <div class="gallery" id="gallery">
-    <!-- Each .item is one photo. Set data-cat to "portraits", "street", or "travel", and data-year to the photo's year (add more categories/years + filter buttons above as needed). Swap img src/data-full with your own files, and edit the caption. -->
-    <div class="item" data-cat="b&amp;w" data-year="2026" tabindex="0" data-full="https://picsum.photos/seed/p1/1400/1750" data-cap="b&amp;w — window light, afternoon">
-      <img loading="lazy" decoding="async" width="700" height="875" src="https://picsum.photos/seed/p1/700/875" alt="Portrait in window light">
-      <span class="item-tag">B&amp;W</span>
-      <span class="item-cap">Window light, afternoon</span>
-    </div>
-    <div class="item" data-cat="street" data-year="2026" tabindex="0" data-full="https://picsum.photos/seed/s1/1400/933" data-cap="Street — market corner, morning">
-      <img loading="lazy" decoding="async" width="700" height="467" src="https://picsum.photos/seed/s1/700/467" alt="Street scene at a market corner">
-      <span class="item-tag">Street</span>
-      <span class="item-cap">Market corner, morning</span>
-    </div>
-    <div class="item" data-cat="travel" data-year="2025" tabindex="0" data-full="https://picsum.photos/seed/t1/1400/1867" data-cap="Travel — coastal town, late light">
-      <img loading="lazy" decoding="async" width="700" height="933" src="https://picsum.photos/seed/t1/700/933" alt="Coastal town in late afternoon light">
-      <span class="item-tag">Travel</span>
-      <span class="item-cap">Coastal town, late light</span>
-    </div>
-    <div class="item" data-cat="street" data-year="2025" tabindex="0" data-full="https://picsum.photos/seed/s2/1400/1050" data-cap="Street — transit platform, rush hour">
-      <img loading="lazy" decoding="async" width="700" height="525" src="https://picsum.photos/seed/s2/700/525" alt="Busy transit platform during rush hour">
-      <span class="item-tag">Street</span>
-      <span class="item-cap">Transit platform, rush hour</span>
-    </div>
-    <div class="item" data-cat="portraits" data-year="2025" tabindex="0" data-full="https://picsum.photos/seed/p2/1400/1750" data-cap="Portrait — studio, natural light">
-      <img loading="lazy" decoding="async" width="700" height="875" src="https://picsum.photos/seed/p2/700/875" alt="Studio portrait in natural light">
-      <span class="item-tag">Portraits</span>
-      <span class="item-cap">Studio, natural light</span>
-    </div>
-    <div class="item" data-cat="travel" data-year="2024" tabindex="0" data-full="https://picsum.photos/seed/t2/1400/933" data-cap="Travel — mountain road, early morning">
-      <img loading="lazy" decoding="async" width="700" height="467" src="https://picsum.photos/seed/t2/700/467" alt="Mountain road in early morning">
-      <span class="item-tag">Travel</span>
-      <span class="item-cap">Mountain road, early morning</span>
-    </div>
-    <div class="item" data-cat="street" data-year="2024" tabindex="0" data-full="https://picsum.photos/seed/s3/1400/1750" data-cap="Street — alleyway, midday shadow">
-      <img loading="lazy" decoding="async" width="700" height="875" src="https://picsum.photos/seed/s3/700/875" alt="Alleyway with strong midday shadow">
-      <span class="item-tag">Street</span>
-      <span class="item-cap">Alleyway, midday shadow</span>
-    </div>
-    <div class="item" data-cat="portraits" data-year="2024" tabindex="0" data-full="https://picsum.photos/seed/p3/1400/1050" data-cap="Portrait — outdoors, golden hour">
-      <img loading="lazy" decoding="async" width="700" height="525" src="https://picsum.photos/seed/p3/700/525" alt="Outdoor portrait during golden hour">
-      <span class="item-tag">Portraits</span>
-      <span class="item-cap">Outdoors, golden hour</span>
-    </div>
-    <div class="item" data-cat="travel" data-year="2023" tabindex="0" data-full="https://picsum.photos/seed/t3/1400/1750" data-cap="Travel — old town streets">
-      <img loading="lazy" decoding="async" width="700" height="875" src="https://picsum.photos/seed/t3/700/875" alt="Narrow streets of an old town">
-      <span class="item-tag">Travel</span>
-      <span class="item-cap">Old town streets</span>
-    </div>
-    <div class="item" data-cat="street" data-year="2023" tabindex="0" data-full="https://picsum.photos/seed/s4/1400/933" data-cap="Street — corner store, dusk">
-      <img loading="lazy" decoding="async" width="700" height="467" src="https://picsum.photos/seed/s4/700/467" alt="Corner store lit at dusk">
-      <span class="item-tag">Street</span>
-      <span class="item-cap">Corner store, dusk</span>
-    </div>
-    <div class="item" data-cat="travel" data-year="2023" tabindex="0" data-full="https://picsum.photos/seed/t4/1400/1050" data-cap="Travel — harbor, blue hour">
-      <img loading="lazy" decoding="async" width="700" height="525" src="https://picsum.photos/seed/t4/700/525" alt="Harbor scene at blue hour">
-      <span class="item-tag">Travel</span>
-      <span class="item-cap">Harbor, blue hour</span>
-    </div>
-    <div class="item" data-cat="portraits" data-year="2026" tabindex="0" data-full="https://picsum.photos/seed/p4/1400/1867" data-cap="Portrait — candid, indoors">
-      <img loading="lazy" decoding="async" width="700" height="933" src="https://picsum.photos/seed/p4/700/933" alt="Candid indoor portrait">
-      <span class="item-tag">Portraits</span>
-      <span class="item-cap">Candid, indoors</span>
-    </div>
+    <!-- Photos are added in the PHOTOS list near the top of the <script> below — no HTML editing needed. -->
   </div>
 </section>
 
@@ -349,6 +290,54 @@
 </div>
 
 <script>
+  /* ======================================================================
+     ADD YOUR PHOTOS HERE — one line per photo, nothing else to edit.
+
+     src:  image URL or file path (e.g. "images/my-photo.jpg")
+     cat:  "color", "b&w", "street", "travel", or "portraits"
+           (add a new filter button above if you use a new category)
+     year: the year the photo was taken, as a string, e.g. "2026"
+     cap:  short caption shown on hover / in the lightbox
+     alt:  short description for accessibility / screen readers
+  ====================================================================== */
+  const PHOTOS = [
+    { src:"https://picsum.photos/seed/p1/900/1125", cat:"b&w",       year:"2026", cap:"Window light, afternoon",     alt:"Portrait in window light" },
+    { src:"https://picsum.photos/seed/s1/900/600",  cat:"street",    year:"2026", cap:"Market corner, morning",      alt:"Street scene at a market corner" },
+    { src:"https://picsum.photos/seed/t1/900/1200", cat:"travel",    year:"2025", cap:"Coastal town, late light",    alt:"Coastal town in late afternoon light" },
+    { src:"https://picsum.photos/seed/s2/900/675",  cat:"street",    year:"2025", cap:"Transit platform, rush hour", alt:"Busy transit platform during rush hour" },
+    { src:"https://picsum.photos/seed/p2/900/1125", cat:"portraits", year:"2025", cap:"Studio, natural light",       alt:"Studio portrait in natural light" },
+    { src:"https://picsum.photos/seed/t2/900/600",  cat:"travel",    year:"2024", cap:"Mountain road, early morning",alt:"Mountain road in early morning" },
+    { src:"https://picsum.photos/seed/s3/900/1125", cat:"street",    year:"2024", cap:"Alleyway, midday shadow",     alt:"Alleyway with strong midday shadow" },
+    { src:"https://picsum.photos/seed/p3/900/675",  cat:"portraits", year:"2024", cap:"Outdoors, golden hour",       alt:"Outdoor portrait during golden hour" },
+    { src:"https://picsum.photos/seed/t3/900/1125", cat:"travel",    year:"2023", cap:"Old town streets",            alt:"Narrow streets of an old town" },
+    { src:"https://picsum.photos/seed/s4/900/600",  cat:"street",    year:"2023", cap:"Corner store, dusk",          alt:"Corner store lit at dusk" },
+    { src:"https://picsum.photos/seed/t4/900/675",  cat:"travel",    year:"2023", cap:"Harbor, blue hour",           alt:"Harbor scene at blue hour" },
+    { src:"https://picsum.photos/seed/p4/900/1200", cat:"portraits", year:"2026", cap:"Candid, indoors",             alt:"Candid indoor portrait" },
+  ];
+
+  // ---- build the gallery from PHOTOS ----
+  const TAG_LABELS = { color:"Color", "b&w":"B&W", street:"Street", travel:"Travel", portraits:"Portraits" };
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  }
+
+  function renderGallery(){
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = PHOTOS.map(p=>{
+      const tag = TAG_LABELS[p.cat] || p.cat;
+      const cap = escapeHtml(p.cap || '');
+      const alt = escapeHtml(p.alt || p.cap || '');
+      return `
+        <div class="item" data-cat="${p.cat}" data-year="${p.year}" tabindex="0" data-full="${p.src}" data-cap="${cap}">
+          <img loading="lazy" decoding="async" src="${p.src}" alt="${alt}">
+          <span class="item-tag">${tag}</span>
+          <span class="item-cap">${cap}</span>
+        </div>`;
+    }).join('');
+  }
+  renderGallery();
+
   // ---- filtering (year tabs + category filters inside each tab, combined with AND) ----
   const yearTabs = document.querySelectorAll('#yearTabs .year-tab');
   const catButtons = document.querySelectorAll('#filters .filter-btn');
