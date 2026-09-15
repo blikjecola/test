@@ -55,7 +55,7 @@
   nav a:hover{ color:var(--ink); }
 
   /* hero */
-  .hero{ padding:64px 0 44px; border-bottom:1px solid var(--line); text-align:center; }
+  .hero{ padding:64px 0 44px; text-align:center; }
   .hero .wrap{ display:flex; flex-direction:column; align-items:center; }
   .hero h1{
     font-family:var(--font-display); font-weight:600;
@@ -75,78 +75,63 @@
     .hero p{ font-size:14.5px; }
   }
 
-  /* year tabs */
-  .year-tabs{
-    padding:28px 0 0; display:flex; gap:24px; flex-wrap:wrap; align-items:center;
+  /* folders — one clickable folder per tag; click to open and see its photos */
+  .folder-grid{
+    padding:28px 0 0; display:grid; grid-template-columns:repeat(auto-fill, 220px);
+    justify-content:center; gap:18px;
   }
-  /* full-bleed divider: a plain block in normal flow (not inside the
-     scrolling .year-tabs), so it's never clipped on any screen size */
-  .tabs-divider{
-    width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw);
-    height:1px; background:var(--line);
+  .folder{
+    font-family:var(--font-body); text-align:left; cursor:pointer;
+    border:1px solid var(--line); border-radius:10px; background:transparent;
+    padding:0; display:flex; flex-direction:column; overflow:hidden;
+    transition:border-color .2s ease, transform .2s ease;
   }
-  .year-tab{
-    font-family:var(--font-display); font-weight:600; font-size:15px; letter-spacing:-.01em;
-    padding:0 2px 12px; border:none; background:transparent; color:var(--mute);
-    cursor:pointer; position:relative; transition:color .2s ease;
+  .folder:hover{ border-color:var(--ink); transform:translateY(-2px); }
+  .folder-thumb{
+    position:relative; width:100%; aspect-ratio:4/5; background:var(--line); overflow:hidden;
   }
-  .year-tab::after{
-    content:''; position:absolute; left:0; right:0; bottom:-1px; height:2px;
-    background:var(--ink); transform:scaleX(0); transition:transform .25s ease; transform-origin:left;
+  .folder-thumb img{
+    width:100%; height:100%; object-fit:cover;
+    filter:grayscale(.1); transition:transform .4s ease, filter .4s ease;
   }
-  .year-tab:hover{ color:var(--ink); }
-  .year-tab.active{ color:var(--ink); }
-  .year-tab.active::after{ transform:scaleX(1); }
+  .folder:hover .folder-thumb img{ transform:scale(1.04); filter:grayscale(0); }
+  .folder-body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:5px; }
+  .folder-name{ font-family:var(--font-display); font-weight:600; font-size:15.5px; letter-spacing:-.01em; }
+  .folder-count{ font-family:var(--font-mono); font-size:11.5px; color:var(--mute); opacity:.7; }
 
   @media (max-width:640px){
-    .year-tabs{
-      gap:16px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
-      padding:22px 0 0;
-    }
-    .year-tabs::-webkit-scrollbar{ display:none; }
-    .year-tab{ flex:0 0 auto; white-space:nowrap; font-size:14px; }
+    .folder-grid{ grid-template-columns:repeat(auto-fill, 150px); gap:12px; padding:20px 0 0; }
+    .folder-body{ padding:11px 13px 13px; }
+    .folder-name{ font-size:14px; }
   }
 
-  /* filters */
-  .filters{ padding:28px 0 8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-  .filters span{ font-family:var(--font-mono); font-size:11px; color:var(--mute); margin-right:6px; }
-  .filter-btn{
-    font-family:var(--font-body); font-size:13.5px; padding:7px 15px;
-    border:1px solid var(--line); border-radius:100px; background:transparent; color:var(--mute);
-    cursor:pointer; transition:all .2s ease; min-height:36px;
+  .back-btn{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.03em; text-transform:uppercase;
+    padding:9px 16px; border:1px solid var(--line); border-radius:100px; background:transparent;
+    color:var(--mute); cursor:pointer; transition:all .2s ease; margin:28px 0 20px;
   }
-  .filter-btn:hover{ border-color:var(--ink); color:var(--ink); }
-  .filter-btn.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .back-btn:hover{ border-color:var(--ink); color:var(--ink); }
 
-  /* --- small screens: filters scroll instead of wrap --- */
-  @media (max-width:640px){
-    .filters{
-      flex-wrap:nowrap; overflow-x:auto; padding:20px 0 10px;
-      -webkit-overflow-scrolling:touch; scrollbar-width:none;
-    }
-    .filters::-webkit-scrollbar{ display:none; }
-    .filters span{ flex:0 0 auto; }
-    .filter-btn{ flex:0 0 auto; white-space:nowrap; }
+  .tag-heading{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--mute); display:flex; align-items:center; gap:12px; padding-bottom:14px;
   }
+  .tag-heading::after{ content:''; flex:1 1 auto; height:1px; background:var(--line); }
+  .tag-count{ color:var(--mute); opacity:.6; }
 
   /* gallery — fixed-size tiles in a grid (no stretching); wraps and centers per row for any viewport */
-  .gallery{ max-width:2000px; margin:0 auto; padding:32px 0 90px; display:grid; grid-template-columns:repeat(auto-fill, 300px); justify-content:center; gap:16px; }
+  .gallery{ max-width:2000px; margin:0 auto; padding:0; display:grid; grid-template-columns:repeat(auto-fill, 300px); justify-content:center; gap:16px; }
+  #work{ padding-bottom:90px; }
   .item{
     width:300px; height:375px; position:relative; overflow:hidden;
     cursor:pointer; background:var(--line);
     transition:opacity .35s ease, transform .35s ease;
   }
-  .item.is-hidden{ opacity:0; transform:scale(.97); pointer-events:none; position:absolute; visibility:hidden; }
   .item img{
     width:100%; height:100%; object-fit:cover;
     transition:transform .5s ease, filter .5s ease; filter:grayscale(.1);
   }
   .item:hover img{ transform:scale(1.04); filter:grayscale(0); }
-  .item-tag{
-    position:absolute; top:10px; left:10px; z-index:2;
-    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.04em; text-transform:uppercase;
-    background:rgba(28,27,25,.72); color:var(--paper); padding:4px 9px; border-radius:100px;
-  }
   .item-cap{
     position:absolute; left:0; right:0; bottom:0; z-index:2;
     padding:14px 14px 12px; font-size:13px; color:var(--paper);
@@ -157,15 +142,15 @@
 
   /* --- small screens: gallery --- */
   @media (max-width:640px){
-    .gallery{ grid-template-columns:repeat(auto-fill, 150px); padding:20px 0 60px; gap:12px; }
+    .gallery{ grid-template-columns:repeat(auto-fill, 150px); padding:0; gap:12px; }
     .item{ width:150px; height:187px; }
+    #work{ padding-bottom:60px; }
     /* hover states don't work reliably on touch — keep captions visible */
     .item-cap{ opacity:1; transform:translateY(0); font-size:12.5px; padding:11px 12px 10px; }
-    .item-tag{ font-size:10px; padding:4px 8px; }
   }
 
   /* about */
-  #about{ border-top:1px solid var(--line); display:flex; justify-content:center; }
+  #about{ display:flex; justify-content:center; }
   .about{
     padding:60px 24px; display:flex; flex-direction:column; align-items:center; gap:36px;
     width:100%; max-width:480px; margin:0 auto; text-align:center;
@@ -227,31 +212,20 @@
 <section class="hero">
   <div class="wrap">
     <h1>Photography — street, and travel work.</h1>
-    <p>A collection of all photos to this day, sorted by category. Click any image to view it larger.</p>
+    <p>A collection of all photos to this day, sorted by category. Click a folder to open it, then click any photo to view it larger.</p>
   </div>
 </section>
 
 <section id="work" class="wrap">
-  <div class="filters-wrap">
-    <div class="year-tabs" id="yearTabs" role="tablist" aria-label="Filter by year">
-      <button class="year-tab active" role="tab" aria-selected="true" data-year="all">All</button>
-      <button class="year-tab" role="tab" aria-selected="false" data-year="2026">2026</button>
-      <button class="year-tab" role="tab" aria-selected="false" data-year="2025">2025</button>
-    </div>
-    <div class="tabs-divider"></div>
-    <div class="filters" id="filters">
-      <span>FILTER</span>
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="color">Color</button>
-      <button class="filter-btn" data-filter="b&amp;w">B&amp;W</button>
-      <button class="filter-btn" data-filter="street">Street</button>
-      <button class="filter-btn" data-filter="travel">Travel</button>
-      <button class="filter-btn" data-filter="portraits">Portraits</button>
+  <div id="folderView">
+    <div class="folder-grid" id="folderGrid">
+      <!-- Folders (one per tag) are built from the PHOTOS list near the top of the <script> below — no HTML editing needed. -->
     </div>
   </div>
-
-  <div class="gallery" id="gallery">
-    <!-- Photos are added in the PHOTOS list near the top of the <script> below — no HTML editing needed. -->
+  <div id="galleryView" hidden>
+    <button class="back-btn" id="backToFolders">&larr; All folders</button>
+    <div class="tag-heading" id="openTagHeading"></div>
+    <div class="gallery" id="openGallery"></div>
   </div>
 </section>
 
@@ -324,103 +298,129 @@
     
   ];
 
-  // ---- build the gallery from PHOTOS ----
+  // ---- group PHOTOS by tag; one "folder" per tag ----
   const TAG_LABELS = { color:"Color", "b&w":"B&W", street:"Street", travel:"Travel", portraits:"Portraits" };
+  const TAG_ORDER = ["color", "b&w", "street", "travel", "portraits"];
 
   function escapeHtml(str){
     return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
   }
 
-  function renderGallery(){
-    const gallery = document.getElementById('gallery');
-    gallery.innerHTML = PHOTOS.map(p=>{
-      const tag = TAG_LABELS[p.cat] || p.cat;
-      const cap = escapeHtml(p.cap || '');
-      const alt = escapeHtml(p.alt || p.cap || '');
+  const groups = new Map();
+  PHOTOS.forEach(p=>{
+    if(!groups.has(p.cat)) groups.set(p.cat, []);
+    groups.get(p.cat).push(p);
+  });
+  // order known tags first (only if they have photos), then any unknown tags found in the data
+  const tags = [
+    ...TAG_ORDER.filter(t=>groups.has(t)),
+    ...Array.from(groups.keys()).filter(t=>!TAG_ORDER.includes(t))
+  ];
+
+  function renderFolders(){
+    const grid = document.getElementById('folderGrid');
+    grid.innerHTML = tags.map(tag=>{
+      const photos = groups.get(tag);
+      const label = TAG_LABELS[tag] || tag;
+      const thumb = photos[0];
+      const thumbAlt = escapeHtml(thumb.alt || thumb.cap || label);
       return `
-        <div class="item" data-cat="${p.cat}" data-year="${p.year}" tabindex="0" data-full="${p.src}" data-cap="${cap}">
-          <img loading="lazy" decoding="async" src="${p.src}" alt="${alt}">
-          <span class="item-tag">${tag}</span>
-          <span class="item-cap">${cap}</span>
-        </div>`;
+        <button class="folder" type="button" data-tag="${escapeHtml(tag)}">
+          <div class="folder-thumb">
+            <img loading="lazy" decoding="async" src="${thumb.src}" alt="${thumbAlt}">
+          </div>
+          <div class="folder-body">
+            <span class="folder-name">${escapeHtml(label)}</span>
+            <span class="folder-count">${photos.length} photo${photos.length===1?'':'s'}</span>
+          </div>
+        </button>`;
     }).join('');
   }
-  renderGallery();
+  renderFolders();
 
-  // ---- filtering (year tabs + category filters inside each tab, combined with AND) ----
-  const yearTabs = document.querySelectorAll('#yearTabs .year-tab');
-  const catButtons = document.querySelectorAll('#filters .filter-btn');
-  const items = document.querySelectorAll('.item');
-
-  let activeYear = 'all';
-  let activeCat = 'all';
-
-  function applyFilters(){
-    items.forEach(item=>{
-      const matchesYear = (activeYear === 'all' || item.dataset.year === activeYear);
-      const matchesCat = (activeCat === 'all' || item.dataset.cat === activeCat);
-      item.classList.toggle('is-hidden', !(matchesYear && matchesCat));
-    });
+  function itemHtml(p){
+    const cap = escapeHtml(p.cap || '');
+    const alt = escapeHtml(p.alt || p.cap || '');
+    return `
+      <div class="item" tabindex="0" data-full="${p.src}" data-cap="${cap}">
+        <img loading="lazy" decoding="async" src="${p.src}" alt="${alt}">
+        <span class="item-cap">${cap}</span>
+      </div>`;
   }
 
-  yearTabs.forEach(tab=>{
-    tab.addEventListener('click', ()=>{
-      yearTabs.forEach(t=>{ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected','true');
-      activeYear = tab.dataset.year;
-      applyFilters();
-    });
-  });
+  const folderView = document.getElementById('folderView');
+  const galleryView = document.getElementById('galleryView');
+  const openTagHeading = document.getElementById('openTagHeading');
+  const openGallery = document.getElementById('openGallery');
 
-  catButtons.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      catButtons.forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      activeCat = btn.dataset.filter;
-      applyFilters();
-    });
-  });
-
-  // ---- reveal on scroll ----
+  // ---- reveal-on-scroll, rebound each time a folder's photos are rendered ----
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       if(e.isIntersecting){ e.target.style.opacity = 1; io.unobserve(e.target); }
     });
   }, { threshold:.1 });
-  items.forEach(i=>{ i.style.opacity = 0; i.style.transition = 'opacity .5s ease'; io.observe(i); });
+
+  let itemList = [];
+
+  function openFolder(tag){
+    const photos = groups.get(tag) || [];
+    const label = TAG_LABELS[tag] || tag;
+    openTagHeading.innerHTML = `${escapeHtml(label)} <span class="tag-count">(${photos.length})</span>`;
+    openGallery.innerHTML = photos.map(itemHtml).join('');
+
+    itemList = Array.from(openGallery.querySelectorAll('.item'));
+    itemList.forEach(i=>{
+      i.style.opacity = 0; i.style.transition = 'opacity .5s ease'; io.observe(i);
+    });
+
+    folderView.hidden = true;
+    galleryView.hidden = false;
+    window.scrollTo({ top: document.getElementById('work').offsetTop - 20, behavior:'smooth' });
+  }
+
+  function closeFolder(){
+    galleryView.hidden = true;
+    folderView.hidden = false;
+    itemList = [];
+  }
+
+  document.getElementById('folderGrid').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.folder');
+    if(btn) openFolder(btn.dataset.tag);
+  });
+  document.getElementById('backToFolders').addEventListener('click', closeFolder);
 
   // ---- lightbox ----
   const lightbox = document.getElementById('lightbox');
   const lbImg = document.getElementById('lbImg');
   const lbCap = document.getElementById('lbCap');
-  const itemList = Array.from(items);
   let currentIndex = 0;
 
-  function visibleList(){ return itemList.filter(i=>!i.classList.contains('is-hidden')); }
-
   function openLightbox(item){
-    const list = visibleList();
-    currentIndex = list.indexOf(item);
-    showCurrent(list);
+    currentIndex = itemList.indexOf(item);
+    showCurrent();
     lightbox.classList.add('open');
   }
-  function showCurrent(list){
-    const f = list[currentIndex];
+  function showCurrent(){
+    const f = itemList[currentIndex];
     lbImg.src = f.dataset.full;
     lbImg.alt = f.querySelector('img').alt;
     lbCap.textContent = f.dataset.cap;
   }
   function closeLightbox(){ lightbox.classList.remove('open'); }
   function step(dir){
-    const list = visibleList();
-    currentIndex = (currentIndex + dir + list.length) % list.length;
-    showCurrent(list);
+    currentIndex = (currentIndex + dir + itemList.length) % itemList.length;
+    showCurrent();
   }
 
-  itemList.forEach(item=>{
-    item.addEventListener('click', ()=>openLightbox(item));
-    item.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openLightbox(item);} });
+  openGallery.addEventListener('click', (e)=>{
+    const item = e.target.closest('.item');
+    if(item) openLightbox(item);
+  });
+  openGallery.addEventListener('keydown', (e)=>{
+    if(e.key!=='Enter' && e.key!==' ') return;
+    const item = e.target.closest('.item');
+    if(item){ e.preventDefault(); openLightbox(item); }
   });
 
   document.getElementById('lbClose').addEventListener('click', closeLightbox);
