@@ -172,8 +172,9 @@
     position:fixed; top:50%; transform:translateY(-50%);
     display:flex; align-items:center; justify-content:center;
     width:48px; height:48px; border-radius:50%;
-    font-size:22px; color:var(--paper); background:rgba(0,0,0,.28); border:none; cursor:pointer;
+    color:var(--paper); background:rgba(0,0,0,.28); border:none; cursor:pointer;
   }
+  .lb-btn svg{ width:20px; height:20px; }
   .lb-prev{ left:12px; } .lb-next{ right:12px; }
   .lb-close{ position:fixed; top:16px; right:16px; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:12.5px; background:none; border:1px solid #56514a; color:var(--paper); min-width:40px; min-height:40px; padding:7px 13px; cursor:pointer; border-radius:100px; }
   .lb-close:hover{ border-color:var(--paper); }
@@ -182,7 +183,8 @@
   @media (max-width:640px){
     .lightbox{ padding:4vh 3vw; }
     .lightbox img{ max-height:68vh; }
-    .lb-btn{ width:42px; height:42px; font-size:19px; }
+    .lb-btn{ width:42px; height:42px; }
+    .lb-btn svg{ width:17px; height:17px; }
     .lb-prev{ left:6px; } .lb-next{ right:6px; }
     .lb-close{ top:10px; right:10px; font-size:0; min-width:38px; min-height:38px; padding:0; }
     .lb-close::before{ content:'✕'; font-size:15px; }
@@ -254,123 +256,154 @@
 
 <!-- lightbox -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
-  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous photo">&#8592;</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous photo">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
   <div class="lb-frame">
     <img id="lbImg" src="" alt="">
     <div class="lb-cap" id="lbCap"></div>
   </div>
-  <button class="lb-btn lb-next" id="lbNext" aria-label="Next photo">&#8594;</button>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next photo">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
   <button class="lb-close" id="lbClose">Close ✕</button>
 </div>
 
 <script>
-  /* ======================================================================
-     ADD YOUR PHOTOS HERE — one line per photo, nothing else to edit.
+  /* ============================================================
+     1) YOUR FOLDERS
+     One line per folder — this is the only place you need to add
+     a folder. Everything else (the folder tiles, the photo pages)
+     is built from this list automatically.
 
-     src:  image URL or file path (e.g. "images/my-photo.jpg")
-     cat:  "color", "b&w", "street", "travel", or "portraits"
-           (add a new filter button above if you use a new category)
-     year: the year the photo was taken, as a string, e.g. "2026"
-     cap:  short caption shown on hover / in the lightbox
-     alt:  short description for accessibility / screen readers
-  ====================================================================== */
-  const PHOTOS = [
-    { src:"raw0023-facebook.jpg", cat:"color",       year:"2026", cap:"Stadspark",     alt:"Local Park" },
-    { src:"raw0001-facebook.jpg", cat:"color",       year:"2026", cap:"Trainstation @ Gent",     alt:"Trainstation @ Gent" },
-    { src:"raw0006-facebook.jpg", cat:"color",       year:"2026", cap:"Coffeeshop",     alt:"Coffeeshop" },
-    { src:"raw0002-facebook.jpg", cat:"color",       year:"2026", cap:"Trainstation @ Gent",     alt:"Trainstation @ Gent" },
-    { src:"raw0007-facebook.jpg", cat:"color",       year:"2026", cap:"Bike parking",     alt:"Near trainstation Gent is a spot to park your bike anywhere, even inside-out if it was possible" },
-    { src:"raw0009-facebook.jpg", cat:"color",       year:"2026", cap:"Average Sized Tower",     alt:"At Gent-Sint-Pieters is an average sized tower, it is on  top of the building. pretty hard to miss actually..." },
-    { src:"raw0011-facebook.jpg", cat:"color",       year:"2026", cap:"Passing",     alt:"People need to get to places" },
-    { src:"raw0012-facebook.jpg", cat:"color",       year:"2026", cap:"Uneven Symmetry",     alt:"Forgot my tripod" },
-    { src:"raw0018-facebook.jpg", cat:"color",       year:"2026", cap:"Iron Waitingspot",     alt:"I could not find my bike" },
-    { src:"raw0020-facebook.jpg", cat:"color",       year:"2026", cap:"Other Travel Option",     alt:"I sank when I tried it" },
-    { src:"raw0021-facebook.jpg", cat:"color",       year:"2026", cap:"People Should Slow Down",     alt:"I took forever to get back to the station" },
-    { src:"raw0029-facebook.jpg", cat:"color",       year:"2026", cap:"Underground Passing",     alt:"" },
-    { src:"raw0032-facebook.jpg", cat:"color",       year:"2026", cap:"Waiting",     alt:"Suddenly lots of people were arriving around me" },
-    
-    { src:"fuji-015-facebook.jpg", cat:"color",       year:"2025", cap:"Alleyway To The Local Park",     alt:"" },
-    { src:"fuji-016-facebook.jpg", cat:"color",       year:"2025", cap:"View Into The Past",     alt:"" },
-    { src:"fuji-030-facebook.jpg", cat:"color",       year:"2025", cap:"Bees Being Bees",     alt:"" },
-    { src:"fuji-036-facebook.jpg", cat:"color",       year:"2025", cap:"The Local Park",     alt:"" },
-    { src:"fuji-040-facebook.jpg", cat:"color",       year:"2025", cap:"People Walking On Bridge",     alt:"" },
-    { src:"fuji-044-facebook.jpg", cat:"color",       year:"2025", cap:"Lots Of Green",     alt:"" },
-    
+     id:   short lowercase id, no spaces — used below to put a
+           photo in this folder (e.g. "b&w")
+     name: the label shown on the folder tile (e.g. "B&W")
+  ============================================================ */
+  const FOLDERS = [
+    { id:"color",      name:"Color" },
+    { id:"b&w",        name:"B&W" },
+    { id:"street",     name:"Street" },
+    { id:"travel",     name:"Travel" },
+    { id:"portraits",  name:"Portraits" },
   ];
 
-  // ---- group PHOTOS by tag; one "folder" per tag ----
-  const TAG_LABELS = { color:"Color", "b&w":"B&W", street:"Street", travel:"Travel", portraits:"Portraits" };
-  const TAG_ORDER = ["color", "b&w", "street", "travel", "portraits"];
+  /* ============================================================
+     2) YOUR PHOTOS
+     One line per photo. To add a photo, copy a line and edit it.
+     To add it to a new folder, add that folder above first, then
+     use its id here.
+
+     folder: the id of one of the folders above
+     src:    image file name or URL, e.g. "images/my-photo.jpg"
+     cap:    short caption shown on hover / in the photo viewer
+     alt:    short description for accessibility / screen readers
+             (optional — falls back to the caption if left blank)
+
+     A folder only shows up on the site once it has a photo in it,
+     so you never end up with an empty folder.
+  ============================================================ */
+  const PHOTOS = [
+    { folder:"color", src:"raw0023-facebook.jpg", cap:"Stadspark", alt:"Local Park" },
+    { folder:"color", src:"raw0001-facebook.jpg", cap:"Trainstation @ Gent", alt:"Trainstation @ Gent" },
+    { folder:"color", src:"raw0006-facebook.jpg", cap:"Coffeeshop", alt:"Coffeeshop" },
+    { folder:"color", src:"raw0002-facebook.jpg", cap:"Trainstation @ Gent", alt:"Trainstation @ Gent" },
+    { folder:"color", src:"raw0007-facebook.jpg", cap:"Bike parking", alt:"Near trainstation Gent is a spot to park your bike anywhere, even inside-out if it was possible" },
+    { folder:"color", src:"raw0009-facebook.jpg", cap:"Average Sized Tower", alt:"At Gent-Sint-Pieters is an average sized tower, it is on  top of the building. pretty hard to miss actually..." },
+    { folder:"color", src:"raw0011-facebook.jpg", cap:"Passing", alt:"People need to get to places" },
+    { folder:"color", src:"raw0012-facebook.jpg", cap:"Uneven Symmetry", alt:"Forgot my tripod" },
+    { folder:"color", src:"raw0018-facebook.jpg", cap:"Iron Waitingspot", alt:"I could not find my bike" },
+    { folder:"color", src:"raw0020-facebook.jpg", cap:"Other Travel Option", alt:"I sank when I tried it" },
+    { folder:"color", src:"raw0021-facebook.jpg", cap:"People Should Slow Down", alt:"I took forever to get back to the station" },
+    { folder:"color", src:"raw0029-facebook.jpg", cap:"Underground Passing", alt:"" },
+    { folder:"color", src:"raw0032-facebook.jpg", cap:"Waiting", alt:"Suddenly lots of people were arriving around me" },
+
+    { folder:"color", src:"fuji-015-facebook.jpg", cap:"Alleyway To The Local Park", alt:"" },
+    { folder:"color", src:"fuji-016-facebook.jpg", cap:"View Into The Past", alt:"" },
+    { folder:"color", src:"fuji-030-facebook.jpg", cap:"Bees Being Bees", alt:"" },
+    { folder:"color", src:"fuji-036-facebook.jpg", cap:"The Local Park", alt:"" },
+    { folder:"color", src:"fuji-040-facebook.jpg", cap:"People Walking On Bridge", alt:"" },
+    { folder:"color", src:"fuji-044-facebook.jpg", cap:"Lots Of Green", alt:"" },
+  ];
+
+  // ============================================================
+  // Everything below builds the page from FOLDERS + PHOTOS above.
+  // You shouldn't need to edit anything past this line.
+  // ============================================================
 
   function escapeHtml(str){
     return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
   }
 
-  const groups = new Map();
-  PHOTOS.forEach(p=>{
-    if(!groups.has(p.cat)) groups.set(p.cat, []);
-    groups.get(p.cat).push(p);
+  // group the photos by folder id, keeping the order they're listed in above
+  const photosByFolder = new Map();
+  PHOTOS.forEach(photo=>{
+    if(!photosByFolder.has(photo.folder)) photosByFolder.set(photo.folder, []);
+    photosByFolder.get(photo.folder).push(photo);
   });
-  // order known tags first (only if they have photos), then any unknown tags found in the data
-  const tags = [
-    ...TAG_ORDER.filter(t=>groups.has(t)),
-    ...Array.from(groups.keys()).filter(t=>!TAG_ORDER.includes(t))
-  ];
 
-  function renderFolders(){
+  // only show folders that actually contain a photo, in the order
+  // they're listed in FOLDERS above
+  const visibleFolders = FOLDERS.filter(folder => photosByFolder.has(folder.id));
+
+  // ---- render the folder grid (the "front page" of the gallery) ----
+  function renderFolderGrid(){
     const grid = document.getElementById('folderGrid');
-    grid.innerHTML = tags.map(tag=>{
-      const photos = groups.get(tag);
-      const label = TAG_LABELS[tag] || tag;
-      const thumb = photos[0];
-      const thumbAlt = escapeHtml(thumb.alt || thumb.cap || label);
+    grid.innerHTML = visibleFolders.map(folder=>{
+      const photos = photosByFolder.get(folder.id);
+      const thumbnail = photos[0]; // the folder tile shows the first photo in that folder
+      const thumbAlt = escapeHtml(thumbnail.alt || thumbnail.cap || folder.name);
       return `
-        <button class="folder" type="button" data-tag="${escapeHtml(tag)}">
+        <button class="folder" type="button" data-folder="${escapeHtml(folder.id)}">
           <div class="folder-thumb">
-            <img loading="lazy" decoding="async" src="${thumb.src}" alt="${thumbAlt}">
+            <img loading="lazy" decoding="async" src="${thumbnail.src}" alt="${thumbAlt}">
           </div>
           <div class="folder-body">
-            <span class="folder-name">${escapeHtml(label)}</span>
-            <span class="folder-count">${photos.length} photo${photos.length===1?'':'s'}</span>
+            <span class="folder-name">${escapeHtml(folder.name)}</span>
+            <span class="folder-count">${photos.length} photo${photos.length === 1 ? '' : 's'}</span>
           </div>
         </button>`;
     }).join('');
   }
-  renderFolders();
+  renderFolderGrid();
 
-  function itemHtml(p){
-    const cap = escapeHtml(p.cap || '');
-    const alt = escapeHtml(p.alt || p.cap || '');
+  // ---- render one photo tile ----
+  function photoTileHtml(photo){
+    const caption = escapeHtml(photo.cap || '');
+    const alt = escapeHtml(photo.alt || photo.cap || '');
     return `
-      <div class="item" tabindex="0" data-full="${p.src}" data-cap="${cap}">
-        <img loading="lazy" decoding="async" src="${p.src}" alt="${alt}">
-        <span class="item-cap">${cap}</span>
+      <div class="item" tabindex="0" data-full="${photo.src}" data-cap="${caption}">
+        <img loading="lazy" decoding="async" src="${photo.src}" alt="${alt}">
+        <span class="item-cap">${caption}</span>
       </div>`;
   }
 
-  const folderView = document.getElementById('folderView');
-  const galleryView = document.getElementById('galleryView');
-  const openTagHeading = document.getElementById('openTagHeading');
-  const openGallery = document.getElementById('openGallery');
+  const folderView   = document.getElementById('folderView');   // the grid of folders
+  const galleryView  = document.getElementById('galleryView');  // photos inside the currently open folder
+  const galleryTitle = document.getElementById('openTagHeading');
+  const galleryGrid  = document.getElementById('openGallery');
 
-  // ---- reveal-on-scroll, rebound each time a folder's photos are rendered ----
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.style.opacity = 1; io.unobserve(e.target); }
+  // fades each photo tile in as it scrolls into view; re-used every time a folder opens
+  const revealOnScroll = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){ entry.target.style.opacity = 1; revealOnScroll.unobserve(entry.target); }
     });
   }, { threshold:.1 });
 
-  let itemList = [];
+  let openPhotos = []; // the photo tiles currently on screen, so the lightbox knows what to step through
 
-  function openFolder(tag){
-    const photos = groups.get(tag) || [];
-    const label = TAG_LABELS[tag] || tag;
-    openTagHeading.innerHTML = `${escapeHtml(label)} <span class="tag-count">(${photos.length})</span>`;
-    openGallery.innerHTML = photos.map(itemHtml).join('');
+  function openFolder(folderId){
+    const folder = FOLDERS.find(f => f.id === folderId);
+    const photos = photosByFolder.get(folderId) || [];
 
-    itemList = Array.from(openGallery.querySelectorAll('.item'));
-    itemList.forEach(i=>{
-      i.style.opacity = 0; i.style.transition = 'opacity .5s ease'; io.observe(i);
+    galleryTitle.innerHTML = `${escapeHtml(folder ? folder.name : folderId)} <span class="tag-count">(${photos.length})</span>`;
+    galleryGrid.innerHTML = photos.map(photoTileHtml).join('');
+
+    openPhotos = Array.from(galleryGrid.querySelectorAll('.item'));
+    openPhotos.forEach(tile=>{
+      tile.style.opacity = 0;
+      tile.style.transition = 'opacity .5s ease';
+      revealOnScroll.observe(tile);
     });
 
     folderView.hidden = true;
@@ -381,60 +414,60 @@
   function closeFolder(){
     galleryView.hidden = true;
     folderView.hidden = false;
-    itemList = [];
+    openPhotos = [];
   }
 
   document.getElementById('folderGrid').addEventListener('click', (e)=>{
-    const btn = e.target.closest('.folder');
-    if(btn) openFolder(btn.dataset.tag);
+    const folderBtn = e.target.closest('.folder');
+    if(folderBtn) openFolder(folderBtn.dataset.folder);
   });
   document.getElementById('backToFolders').addEventListener('click', closeFolder);
 
-  // ---- lightbox ----
+  // ---- lightbox (full-screen photo viewer) ----
   const lightbox = document.getElementById('lightbox');
   const lbImg = document.getElementById('lbImg');
   const lbCap = document.getElementById('lbCap');
   let currentIndex = 0;
 
-  function openLightbox(item){
-    currentIndex = itemList.indexOf(item);
-    showCurrent();
+  function openLightbox(tile){
+    currentIndex = openPhotos.indexOf(tile);
+    showCurrentPhoto();
     lightbox.classList.add('open');
   }
-  function showCurrent(){
-    const f = itemList[currentIndex];
-    lbImg.src = f.dataset.full;
-    lbImg.alt = f.querySelector('img').alt;
-    lbCap.textContent = f.dataset.cap;
+  function showCurrentPhoto(){
+    const tile = openPhotos[currentIndex];
+    lbImg.src = tile.dataset.full;
+    lbImg.alt = tile.querySelector('img').alt;
+    lbCap.textContent = tile.dataset.cap;
   }
   function closeLightbox(){ lightbox.classList.remove('open'); }
-  function step(dir){
-    currentIndex = (currentIndex + dir + itemList.length) % itemList.length;
-    showCurrent();
+  function stepLightbox(direction){
+    currentIndex = (currentIndex + direction + openPhotos.length) % openPhotos.length;
+    showCurrentPhoto();
   }
 
-  openGallery.addEventListener('click', (e)=>{
-    const item = e.target.closest('.item');
-    if(item) openLightbox(item);
+  galleryGrid.addEventListener('click', (e)=>{
+    const tile = e.target.closest('.item');
+    if(tile) openLightbox(tile);
   });
-  openGallery.addEventListener('keydown', (e)=>{
-    if(e.key!=='Enter' && e.key!==' ') return;
-    const item = e.target.closest('.item');
-    if(item){ e.preventDefault(); openLightbox(item); }
+  galleryGrid.addEventListener('keydown', (e)=>{
+    if(e.key !== 'Enter' && e.key !== ' ') return;
+    const tile = e.target.closest('.item');
+    if(tile){ e.preventDefault(); openLightbox(tile); }
   });
 
   document.getElementById('lbClose').addEventListener('click', closeLightbox);
-  document.getElementById('lbPrev').addEventListener('click', ()=>step(-1));
-  document.getElementById('lbNext').addEventListener('click', ()=>step(1));
+  document.getElementById('lbPrev').addEventListener('click', ()=>stepLightbox(-1));
+  document.getElementById('lbNext').addEventListener('click', ()=>stepLightbox(1));
   lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', (e)=>{
     if(!lightbox.classList.contains('open')) return;
     if(e.key === 'Escape') closeLightbox();
-    if(e.key === 'ArrowLeft') step(-1);
-    if(e.key === 'ArrowRight') step(1);
+    if(e.key === 'ArrowLeft') stepLightbox(-1);
+    if(e.key === 'ArrowRight') stepLightbox(1);
   });
 
-  // ---- swipe to navigate (touch devices) ----
+  // ---- swipe left/right to navigate the lightbox on touch devices ----
   let touchStartX = 0, touchStartY = 0;
   lightbox.addEventListener('touchstart', (e)=>{
     touchStartX = e.changedTouches[0].clientX;
@@ -444,7 +477,7 @@
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
     if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)){
-      step(dx < 0 ? 1 : -1);
+      stepLightbox(dx < 0 ? 1 : -1);
     }
   }, { passive:true });
 </script>
